@@ -20,22 +20,32 @@ type usageStat struct {
 }
 
 type cpuInfo struct {
-	Cores int    `json:"cores"`
-	Model string `json:"model"`
+	PhysicalCores int    `json:"physical_cores"`
+	LogicalCores  int    `json:"logical_cores"`
+	Model         string `json:"model"`
+	Vendor        string `json:"vendor"`
+	Family        string `json:"family"`
+}
+
+type hostInfo struct {
+	Uptime          uint64  `json:"uptime"`
+	UptimeHours     float64 `json:"uptime_hours"`
+	Hostname        string  `json:"hostname"`
+	OS              string  `json:"os"`
+	Platform        string  `json:"platform"`
+	PlatformVersion string  `json:"platform_version"`
+	KernelVersion   string  `json:"kernel_version"`
+	KernelArch      string  `json:"kernel_arch"`
 }
 
 // SysInfo saves the basic system information
 type SysInfo struct {
-	Host          host.InfoStat       `json:"host"`
+	Host          hostInfo            `json:"host"`
 	CPU           cpuInfo             `json:"cpu"`
 	RAM           usageStat           `json:"ram"`
 	Disk          usageStat           `json:"disk"`
 	IpAddresses   []string            `json:"ip_addresses"`
 	NetInterfaces []net.InterfaceStat `json:"net_interfaces"`
-}
-
-func RemoveIndex(s []net.InterfaceStat, index int) []net.InterfaceStat {
-	return append(s[:index], s[index+1:]...)
 }
 
 func main() {
@@ -45,11 +55,23 @@ func main() {
 	diskStat, _ := disk.Usage("/")
 
 	info := new(SysInfo)
-	info.Host = *hostStat
-	info.CPU = cpuInfo{
-		Cores: int(cpuStat[0].Cores),
-		Model: cpuStat[0].ModelName,
+	info.Host = hostInfo{
+		Uptime:          hostStat.Uptime,
+		UptimeHours:     float64(hostStat.Uptime) / 3600,
+		Hostname:        hostStat.Hostname,
+		OS:              hostStat.OS,
+		Platform:        hostStat.Platform,
+		PlatformVersion: hostStat.PlatformVersion,
+		KernelVersion:   hostStat.KernelVersion,
+		KernelArch:      hostStat.KernelArch,
 	}
+	info.CPU = cpuInfo{
+		Model:  cpuStat[0].ModelName,
+		Vendor: cpuStat[0].VendorID,
+		Family: cpuStat[0].Family,
+	}
+	info.CPU.PhysicalCores, _ = cpu.Counts(false)
+	info.CPU.LogicalCores, _ = cpu.Counts(true)
 	info.RAM = usageStat{
 		Total:       vmStat.Total / 1024 / 1024,
 		Available:   vmStat.Available / 1024 / 1024,
@@ -88,6 +110,4 @@ func main() {
 	infoJson, _ := json.Marshal(info)
 
 	fmt.Println(string(infoJson))
-	fmt.Println("Full CPU Info:")
-	fmt.Println(cpuStat)
 }
