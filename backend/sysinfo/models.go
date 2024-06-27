@@ -1,9 +1,5 @@
 package sysinfo
 
-import (
-	"github.com/shirou/gopsutil/v4/net"
-)
-
 type UsageStat struct {
 	Total       uint64  `json:"total"`
 	Available   uint64  `json:"available"`
@@ -31,10 +27,9 @@ type HostInfo struct {
 }
 
 type SysInfo struct {
-	Host          HostInfo            `json:"host"`
-	CPU           CpuInfo             `json:"cpu"`
-	RAM           UsageStat           `json:"ram"`
-	Disk          UsageStat           `json:"disk"`
-	IpAddresses   []string            `json:"ip_addresses"`
-	NetInterfaces []net.InterfaceStat `json:"net_interfaces"`
+	Host        HostInfo  `json:"host"`
+	CPU         CpuInfo   `json:"cpu"`
+	RAM         UsageStat `json:"ram"`
+	Disk        UsageStat `json:"disk"`
+	IpAddresses []string  `json:"ip_addresses"`
 }

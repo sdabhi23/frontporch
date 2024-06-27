@@ -1,9 +1,8 @@
 package sysinfo
 
 import (
-	"encoding/json"
-	"fmt"
 	"regexp"
+	"strings"
 
 	"github.com/shirou/gopsutil/v4/cpu"
 	"github.com/shirou/gopsutil/v4/disk"
@@ -12,7 +11,7 @@ import (
 	"github.com/shirou/gopsutil/v4/net"
 )
 
-func GetSystemInfo() {
+func GetSystemInfo() SysInfo {
 	hostStat, _ := host.Info()
 	cpuStat, _ := cpu.Info()
 	vmStat, _ := mem.VirtualMemory()
@@ -49,29 +48,19 @@ func GetSystemInfo() {
 		UsedPercent: diskStat.UsedPercent,
 	}
 	interfaceList, _ := net.Interfaces()
-	info.NetInterfaces = interfaceList[:0]
 	info.IpAddresses = []string{}
 
 	// regex to match cidr ipv4 address
 	cidrIP := regexp.MustCompile(`\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/\d{1,2}`)
 
 	for _, netInterface := range interfaceList {
-		ipList := []string{}
-
 		for _, addr := range netInterface.Addrs {
 			match := cidrIP.MatchString(addr.Addr)
 			if match {
-				ipList = append(ipList, addr.Addr)
-				info.IpAddresses = append(info.IpAddresses, addr.Addr)
+				info.IpAddresses = append(info.IpAddresses, strings.Split(addr.Addr, "/")[0])
 			}
-		}
-
-		if len(ipList) > 0 {
-			info.NetInterfaces = append(info.NetInterfaces, netInterface)
 		}
 	}
 
-	infoJson, _ := json.Marshal(info)
-
-	fmt.Println(string(infoJson))
+	return *info
 }
