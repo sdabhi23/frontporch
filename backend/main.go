@@ -19,6 +19,6 @@ func main() {
 		json.NewEncoder(w).Encode(response)
 	})
 
-	fmt.Println("Server is running at http://localhost:8080")
+	fmt.Println("Server is running at http://0.0.0.0:80")
 	log.Fatal(http.ListenAndServe(":80", handlers.LoggingHandler(os.Stdout, http.DefaultServeMux)))
 }
