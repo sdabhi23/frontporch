@@ -52,6 +52,7 @@ func main() {
 		json.NewEncoder(w).Encode(*appConfig)
 	})
 
-	fmt.Println("Server is running at http://0.0.0.0:8080")
-	log.Fatal(http.ListenAndServe("0.0.0.0:8080", handlers.LoggingHandler(os.Stdout, http.DefaultServeMux)))
+	serverAddress := fmt.Sprintf("%s:%d", appConfig.HTTP.Host, appConfig.HTTP.Port)
+	fmt.Printf("Server is running at http://%s", serverAddress)
+	log.Fatal(http.ListenAndServe(serverAddress, handlers.LoggingHandler(os.Stdout, http.DefaultServeMux)))
 }
