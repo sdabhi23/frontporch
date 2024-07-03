@@ -1,15 +1,25 @@
-// import { useState } from "react";
-// import reactLogo from "./assets/react.svg";
-// import viteLogo from "/vite.svg";
-import { Button } from "antd";
-import "./App.css";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
-function App() {
+import { Box } from "@chakra-ui/react";
+import AppBar from "./components/AppBar";
+import HomePage from "./components/Home";
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <HomePage />,
+  },
+]);
+
+const App = () => {
   return (
-    <div className="App">
-      <Button type="primary">Button</Button>
-    </div>
+    <>
+      <AppBar />
+      <Box p={8}>
+        <RouterProvider router={router} />
+      </Box>
+    </>
   );
-}
+};
 
 export default App;
