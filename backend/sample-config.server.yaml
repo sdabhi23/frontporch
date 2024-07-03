@@ -1,0 +1,11 @@
+task: server
+http:
+  port: 8080
+  host: 0.0.0.0
+servers:
+  - host: rpi
+    port: 8080
+  - host: hella
+    port: 8080
+  - host: thor
+    port: 8080

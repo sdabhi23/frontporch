@@ -1,6 +1,7 @@
 package sysinfo
 
 import (
+	"frontporch/config"
 	"regexp"
 	"strings"
 
@@ -11,7 +12,7 @@ import (
 	"github.com/shirou/gopsutil/v4/net"
 )
 
-func GetSystemInfo() SysInfo {
+func GetDaemonSystemInfo() []SysInfo {
 	hostStat, _ := host.Info()
 	cpuStat, _ := cpu.Info()
 	vmStat, _ := mem.VirtualMemory()
@@ -62,5 +63,14 @@ func GetSystemInfo() SysInfo {
 		}
 	}
 
-	return *info
+	var output []SysInfo
+	output = append(output, *info)
+
+	return output
+}
+
+func GetServerSystemInfo(servers *[]config.ServerConfig) []SysInfo {
+	var output []SysInfo
+
+	return output
 }
