@@ -1,19 +1,32 @@
-import { Card, CardBody, HStack, Heading, Icon, Text } from "@chakra-ui/react";
+import { Card, CardBody, HStack, Heading, Icon, Spacer, Text } from "@chakra-ui/react";
 
-import { FaCircle } from "react-icons/fa";
-import { SiApple } from "react-icons/si";
+import { FaServer, FaCircle } from "react-icons/fa6";
+import {
+  SiApple,
+  SiLinux,
+  SiMacos,
+  SiRaspberrypi,
+  SiUbuntu,
+} from "react-icons/si";
 
 const ServerStatus = ({ serverState }) => {
   // const [serverState, setServerState] = useState({});
+  console.log("ServerStatus: ", serverState);
 
   const frontendState = {};
 
-  switch (serverState.host.os) {
-    case "darwin":
-      frontendState.sysIcon = <SiApple />;
-      break;
-    default:
-      break;
+  if (serverState.host.platform === "darwin") {
+    frontendState.sysIcon = SiApple;
+    frontendState.osIcon = SiMacos;
+  } else if (
+    serverState.host.platform === "ubuntu" &&
+    serverState.host.kernel_version.includes("raspi")
+  ) {
+    frontendState.sysIcon = SiRaspberrypi;
+    frontendState.osIcon = SiUbuntu;
+  } else {
+    frontendState.sysIcon = FaServer;
+    frontendState.osIcon = SiLinux;
   }
 
   frontendState.uptime = serverState.host.uptime_hours.toFixed(2);
@@ -27,15 +40,17 @@ const ServerStatus = ({ serverState }) => {
     <Card variant="elevated">
       <CardBody>
         <HStack mb={4}>
-          {frontendState.sysIcon}{" "}
-          <Heading as={"h2"} size={"md"}>
+          <Icon as={FaCircle} color="green.400" />{" "}
+          <Heading as={"h2"} size={"sm"}>
             {frontendState.hostname}
           </Heading>
-          <Icon as={FaCircle} color="green.400" />
+          <Spacer/>
+          <Icon as={frontendState.osIcon} h={5} w={5} />
+          <Icon as={frontendState.sysIcon} h={5} w={5} />
         </HStack>
-        <Text>Uptime: {frontendState.uptime} hours</Text>
-        <Text>RAM: {frontendState.ram} GB</Text>
-        <Text>
+        <Text fontSize="sm">Uptime: {frontendState.uptime} hours</Text>
+        <Text fontSize="sm">RAM: {frontendState.ram} GB</Text>
+        <Text fontSize="sm">
           Disk: {frontendState.disk.total} GB ({frontendState.disk.used_percent}
           % used)
         </Text>

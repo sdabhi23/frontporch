@@ -1,7 +1,11 @@
 package sysinfo
 
 import (
+	"encoding/json"
+	"fmt"
 	"frontporch/config"
+	"io"
+	"net/http"
 	"regexp"
 	"strings"
 
@@ -72,9 +76,31 @@ func GetDaemonSystemInfo() []SysInfo {
 func GetServerSystemInfo(servers *[]config.ServerConfig) []SysInfo {
 	var output []SysInfo
 
-	//for _, server := range *servers {
-	//
-	//}
+	for _, server := range *servers {
+		url := fmt.Sprintf("http://%s:%d/api/sysinfo", server.Host, server.Port)
+
+		resp, err := http.Get(url)
+		if err != nil {
+			fmt.Printf("Error performing GET request: %v\n", err)
+			return nil
+		}
+		defer resp.Body.Close()
+
+		body, err := io.ReadAll(resp.Body)
+		if err != nil {
+			fmt.Printf("Error reading response body: %v\n", err)
+			return nil
+		}
+
+		var sysInfo []SysInfo
+		err = json.Unmarshal(body, &sysInfo)
+		if err != nil {
+			fmt.Printf("Error unmarshaling JSON: %v\n", err)
+			return nil
+		}
+		output = append(output, sysInfo...)
+	}
+
 	selfSysInfo := GetDaemonSystemInfo()
 	output = append(output, selfSysInfo...)
 

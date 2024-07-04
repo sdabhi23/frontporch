@@ -6,7 +6,7 @@ http:
 servers:
   - host: rpi
     port: 8080
-  - host: hella
-    port: 8080
-  - host: thor
-    port: 8080
+  # - host: hella
+  #   port: 8080
+  # - host: thor
+  #   port: 8080  
