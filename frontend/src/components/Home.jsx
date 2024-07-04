@@ -1,31 +1,47 @@
 import {
+  Center,
   CircularProgress,
   HStack,
   Icon,
+  IconButton,
   SimpleGrid,
+  Spacer,
   Text,
   VStack,
 } from "@chakra-ui/react";
-import { FaServer } from "react-icons/fa6";
+import { FaServer, FaRotate } from "react-icons/fa6";
 import { TbAppsFilled } from "react-icons/tb";
 
 import { useEffect, useState } from "react";
 import ServerStatus from "./Server.jsx";
 
+const getServerStatuses = (pre, success, failure) => {
+  pre();
+  const hostname = window.location.host;
+  fetch(`http://${hostname}/api/sysinfo`, {
+    method: "GET",
+    redirect: "follow",
+  })
+    .then((response) => response.json())
+    .then((result) => success(result))
+    .catch((error) => failure(error));
+};
+
 const HomePage = () => {
   const [serverStatuses, setServerStatuses] = useState({});
   const [serverStatusLoading, setserverStatusLoading] = useState(true);
   useEffect(() => {
-    const hostname = window.location.host;
-    setserverStatusLoading(true);
-    fetch(`http://${hostname}/api/sysinfo`, {
-      method: "GET",
-      redirect: "follow",
-    })
-      .then((response) => response.json())
-      .then((result) => setServerStatuses(result))
-      .then(() => setserverStatusLoading(false))
-      .catch((error) => console.error(error));
+    getServerStatuses(
+      () => setserverStatusLoading(true),
+      (result) => {
+        setServerStatuses(result);
+        setserverStatusLoading(false);
+      },
+      (error) => {
+        console.error(error);
+        serverStatusLoading(false);
+      }
+    );
   }, []);
 
   return (
@@ -33,10 +49,29 @@ const HomePage = () => {
       <HStack>
         <Icon as={FaServer} w={6} h={6} marginRight={2} />
         <Text fontSize="2xl">Server Status</Text>
+        <Spacer />
+        <IconButton
+          icon={<FaRotate />}
+          onClick={() => {
+            getServerStatuses(
+              () => setserverStatusLoading(true),
+              (result) => {
+                setServerStatuses(result);
+                setserverStatusLoading(false);
+              },
+              (error) => {
+                console.error(error);
+                serverStatusLoading(false);
+              }
+            );
+          }}
+        />
       </HStack>
       <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} spacing={8}>
         {serverStatusLoading ? (
-          <CircularProgress isIndeterminate />
+          <Center axis="both">
+            <CircularProgress isIndeterminate />
+          </Center>
         ) : (
           serverStatuses.map((serverState) => (
             <ServerStatus

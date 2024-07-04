@@ -1,16 +1,21 @@
+import { ChakraProvider, ColorModeScript } from "@chakra-ui/react";
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { ColorModeScript, ChakraProvider } from "@chakra-ui/react";
+import { HelmetProvider } from "react-helmet-async";
 import theme from "./theme.js";
 
 import App from "./App.jsx";
 import "./index.css";
 
+const bgColor = "orange.500";
+
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <ChakraProvider>
-      <ColorModeScript initialColorMode={theme.config.initialColorMode} />
-      <App />
-    </ChakraProvider>
+    <HelmetProvider>
+      <ChakraProvider>
+        <ColorModeScript initialColorMode={theme.config.initialColorMode} />
+        <App bgColor={bgColor} />
+      </ChakraProvider>
+    </HelmetProvider>
   </React.StrictMode>
 );
