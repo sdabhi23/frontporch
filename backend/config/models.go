@@ -3,8 +3,8 @@ package config
 type TaskType string
 
 const (
-	DaemonTask TaskType = "DAEMON"
-	ServerTask TaskType = "SERVER"
+	DaemonTask TaskType = "daemon"
+	ServerTask TaskType = "server"
 )
 
 type ServerConfig struct {
@@ -13,9 +13,9 @@ type ServerConfig struct {
 }
 
 type HttpConfig struct {
-	Name string `yaml:"name" json:"name"`
-	Host string `yaml:"host" json:"host"`
-	Port int    `yaml:"port" json:"port"`
+	Host          string `yaml:"host" json:"host"`
+	Port          int    `yaml:"port" json:"port"`
+	StaticFileDir string `yaml:"static_file_dir" json:"static_file_dir"`
 }
 
 type WidgetType string

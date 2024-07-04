@@ -72,5 +72,11 @@ func GetDaemonSystemInfo() []SysInfo {
 func GetServerSystemInfo(servers *[]config.ServerConfig) []SysInfo {
 	var output []SysInfo
 
+	//for _, server := range *servers {
+	//
+	//}
+	selfSysInfo := GetDaemonSystemInfo()
+	output = append(output, selfSysInfo...)
+
 	return output
 }
