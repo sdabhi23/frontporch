@@ -1,6 +1,14 @@
-import { Card, CardBody, HStack, Heading, Icon, Spacer, Text } from "@chakra-ui/react";
+import {
+  Card,
+  CardBody,
+  HStack,
+  Heading,
+  Icon,
+  Spacer,
+  Text,
+} from "@chakra-ui/react";
 
-import { FaServer, FaCircle } from "react-icons/fa6";
+import { FaCircle, FaServer } from "react-icons/fa6";
 import {
   SiApple,
   SiLinux,
@@ -29,6 +37,17 @@ const ServerStatus = ({ serverState }) => {
     frontendState.osIcon = SiLinux;
   }
 
+  switch(serverState.status) {
+    case "online":
+      frontendState.status_color = "green.400";
+      break;
+    case "offline":
+      frontendState.status_color = "red.400";
+      break;
+    default:
+      frontendState.status_color = "gray.400";
+  }
+
   frontendState.uptime = serverState.host.uptime_hours.toFixed(2);
   frontendState.hostname = serverState.host.hostname;
   frontendState.ram = (serverState.ram.total / 1024).toFixed(2);
@@ -40,11 +59,11 @@ const ServerStatus = ({ serverState }) => {
     <Card variant="elevated">
       <CardBody>
         <HStack mb={4}>
-          <Icon as={FaCircle} color="green.400" />{" "}
+          <Icon as={FaCircle} color={frontendState.status_color} />{" "}
           <Heading as={"h2"} size={"sm"}>
             {frontendState.hostname}
           </Heading>
-          <Spacer/>
+          <Spacer />
           <Icon as={frontendState.osIcon} h={5} w={5} />
           <Icon as={frontendState.sysIcon} h={5} w={5} />
         </HStack>

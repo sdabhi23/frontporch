@@ -1,5 +1,7 @@
 package sysinfo
 
+import "frontporch/config"
+
 type UsageStat struct {
 	Total       uint64  `json:"total"`
 	Available   uint64  `json:"available"`
@@ -26,10 +28,27 @@ type HostInfo struct {
 	KernelArch      string  `json:"kernel_arch"`
 }
 
+type StatusInfo string
+
+const (
+	Online  StatusInfo = "online"
+	Offline StatusInfo = "offline"
+)
+
 type SysInfo struct {
-	Host        HostInfo  `json:"host"`
-	CPU         CpuInfo   `json:"cpu"`
-	RAM         UsageStat `json:"ram"`
-	Disk        UsageStat `json:"disk"`
-	IpAddresses []string  `json:"ip_addresses"`
+	Host        HostInfo   `json:"host"`
+	CPU         CpuInfo    `json:"cpu"`
+	RAM         UsageStat  `json:"ram"`
+	Disk        UsageStat  `json:"disk"`
+	IpAddresses []string   `json:"ip_addresses"`
+	Status      StatusInfo `json:"status"`
+}
+
+func NewOfflineServer(server config.ServerConfig) *SysInfo {
+	return &SysInfo{
+		Status: Offline,
+		Host: HostInfo{
+			Hostname: server.Host,
+		},
+	}
 }

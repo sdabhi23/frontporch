@@ -67,6 +67,8 @@ func GetDaemonSystemInfo() []SysInfo {
 		}
 	}
 
+	info.Status = Online
+
 	var output []SysInfo
 	output = append(output, *info)
 
@@ -78,26 +80,30 @@ func GetServerSystemInfo(servers *[]config.ServerConfig) []SysInfo {
 
 	for _, server := range *servers {
 		url := fmt.Sprintf("http://%s:%d/api/sysinfo", server.Host, server.Port)
+		var sysInfo []SysInfo
 
 		resp, err := http.Get(url)
 		if err != nil {
 			fmt.Printf("Error performing GET request: %v\n", err)
-			return nil
+			output = append(output, *NewOfflineServer(server))
+			continue
 		}
 		defer resp.Body.Close()
 
 		body, err := io.ReadAll(resp.Body)
 		if err != nil {
 			fmt.Printf("Error reading response body: %v\n", err)
-			return nil
+			output = append(output, *NewOfflineServer(server))
+			continue
 		}
 
-		var sysInfo []SysInfo
 		err = json.Unmarshal(body, &sysInfo)
 		if err != nil {
 			fmt.Printf("Error unmarshaling JSON: %v\n", err)
-			return nil
+			output = append(output, *NewOfflineServer(server))
+			continue
 		}
+
 		output = append(output, sysInfo...)
 	}
 
