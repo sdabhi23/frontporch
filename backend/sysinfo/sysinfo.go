@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"regexp"
 	"strings"
+	"time"
 
 	"github.com/shirou/gopsutil/v4/cpu"
 	"github.com/shirou/gopsutil/v4/disk"
@@ -78,11 +79,16 @@ func GetDaemonSystemInfo() []SysInfo {
 func GetServerSystemInfo(servers *[]config.ServerConfig) []SysInfo {
 	var output []SysInfo
 
+	client := http.Client{
+		Timeout: 3 * time.Second,
+	}
+
 	for _, server := range *servers {
 		url := fmt.Sprintf("http://%s:%d/api/sysinfo", server.Host, server.Port)
 		var sysInfo []SysInfo
 
-		resp, err := http.Get(url)
+		req, _ := http.NewRequest("GET", url, nil)
+		resp, err := client.Do(req)
 		if err != nil {
 			fmt.Printf("Error performing GET request: %v\n", err)
 			output = append(output, *NewOfflineServer(server))
