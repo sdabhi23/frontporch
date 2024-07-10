@@ -9,11 +9,11 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
-import { FaServer, FaRotate } from "react-icons/fa6";
+import { FaRotate, FaServer } from "react-icons/fa6";
 import { TbAppsFilled } from "react-icons/tb";
 
 import { useEffect, useState } from "react";
-import ServerStatus from "./Server.jsx";
+import { ServerStatus } from "./Server.jsx";
 
 const getServerStatuses = (pre, success, failure) => {
   pre();
@@ -27,7 +27,7 @@ const getServerStatuses = (pre, success, failure) => {
     .catch((error) => failure(error));
 };
 
-const HomePage = () => {
+export const HomePage = () => {
   const [serverStatuses, setServerStatuses] = useState({});
   const [serverStatusLoading, setserverStatusLoading] = useState(true);
   useEffect(() => {
@@ -88,5 +88,3 @@ const HomePage = () => {
     </VStack>
   );
 };
-
-export default HomePage;

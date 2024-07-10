@@ -7,6 +7,7 @@ import {
   Spacer,
   Text,
 } from "@chakra-ui/react";
+import PropTypes from "prop-types";
 
 import { FaCircle, FaServer } from "react-icons/fa6";
 import {
@@ -17,10 +18,7 @@ import {
   SiUbuntu,
 } from "react-icons/si";
 
-const ServerStatus = ({ serverState }) => {
-  // const [serverState, setServerState] = useState({});
-  console.log("ServerStatus: ", serverState);
-
+export const ServerStatus = ({ serverState }) => {
   const frontendState = {};
 
   if (serverState.host.platform === "darwin") {
@@ -37,7 +35,7 @@ const ServerStatus = ({ serverState }) => {
     frontendState.osIcon = SiLinux;
   }
 
-  switch(serverState.status) {
+  switch (serverState.status) {
     case "online":
       frontendState.status_color = "green.400";
       break;
@@ -78,4 +76,38 @@ const ServerStatus = ({ serverState }) => {
   );
 };
 
-export default ServerStatus;
+ServerStatus.propTypes = {
+  serverState: PropTypes.shape({
+    host: PropTypes.shape({
+      uptime: PropTypes.number,
+      uptime_hours: PropTypes.number,
+      hostname: PropTypes.string.isRequired,
+      os: PropTypes.string,
+      platform: PropTypes.string,
+      platform_version: PropTypes.string,
+      kernel_version: PropTypes.string,
+      kernel_arch: PropTypes.string,
+    }).isRequired,
+    status: PropTypes.oneOf(["online", "offline"]).isRequired,
+    ram: PropTypes.shape({
+      total: PropTypes.number,
+      available: PropTypes.number,
+      used: PropTypes.number,
+      used_percent: PropTypes.number,
+    }),
+    disk: PropTypes.shape({
+      total: PropTypes.number,
+      available: PropTypes.number,
+      used: PropTypes.number,
+      used_percent: PropTypes.number,
+    }),
+    cpu: PropTypes.shape({
+      physical_cores: PropTypes.number,
+      logical_cores: PropTypes.number,
+      model: PropTypes.string,
+      vendor: PropTypes.string,
+      family: PropTypes.string,
+    }),
+    ip_addresses: PropTypes.arrayOf(PropTypes.string),
+  }).isRequired,
+};

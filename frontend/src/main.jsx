@@ -4,7 +4,7 @@ import ReactDOM from "react-dom/client";
 import { HelmetProvider } from "react-helmet-async";
 import theme from "./theme.js";
 
-import App from "./App.jsx";
+import { App } from "./App.jsx";
 import "./index.css";
 
 const bgColor = "orange.500";

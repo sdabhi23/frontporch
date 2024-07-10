@@ -7,7 +7,7 @@ import {
 } from "@chakra-ui/react";
 import { MdDarkMode, MdLightMode } from "react-icons/md";
 
-const ThemeSwitcher = () => {
+export const ThemeSwitcher = () => {
   const { toggleColorMode } = useColorMode();
   const icon = useColorModeValue(<MdDarkMode />, <MdLightMode />);
   return (
@@ -24,5 +24,3 @@ const ThemeSwitcher = () => {
     </Box>
   );
 };
-
-export default ThemeSwitcher;

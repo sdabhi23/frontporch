@@ -1,8 +1,10 @@
-import { Box, Heading, HStack, Icon } from "@chakra-ui/react";
-import ThemeSwitcher from "./ThemeSwitcher";
-import { TbCloudNetwork } from "react-icons/tb";
+import PropTypes from "prop-types";
 
-const AppBar = (props) => {
+import { Box, Heading, HStack, Icon } from "@chakra-ui/react";
+import { TbCloudNetwork } from "react-icons/tb";
+import { ThemeSwitcher } from "./ThemeSwitcher";
+
+export const AppBar = (props) => {
   return (
     <Box bg={props.bgColor} w="100%" p={8} color="white" boxShadow="base">
       <HStack>
@@ -16,4 +18,6 @@ const AppBar = (props) => {
   );
 };
 
-export default AppBar;
+AppBar.propTypes = {
+  bgColor: PropTypes.string,
+};
