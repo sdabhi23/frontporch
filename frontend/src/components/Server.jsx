@@ -4,6 +4,8 @@ import {
   HStack,
   Heading,
   Icon,
+  SkeletonCircle,
+  SkeletonText,
   Spacer,
   Text,
 } from "@chakra-ui/react";
@@ -110,4 +112,21 @@ ServerStatus.propTypes = {
     }),
     ip_addresses: PropTypes.arrayOf(PropTypes.string),
   }).isRequired,
+};
+
+export const ServerStatusSkeleton = () => {
+  return (
+    <Card variant="elevated">
+      <CardBody>
+        <HStack mb={6}>
+          <SkeletonCircle h={5} w={5} />{" "}
+          <SkeletonText noOfLines={1} w="100px" />
+          <Spacer />
+          <SkeletonCircle h={5} w={5} />
+          <SkeletonCircle h={5} w={5} />
+        </HStack>
+        <SkeletonText noOfLines={4} />
+      </CardBody>
+    </Card>
+  );
 };

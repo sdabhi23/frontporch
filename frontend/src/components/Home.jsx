@@ -1,6 +1,4 @@
 import {
-  Center,
-  CircularProgress,
   HStack,
   Icon,
   IconButton,
@@ -13,7 +11,7 @@ import { FaRotate, FaServer } from "react-icons/fa6";
 import { TbAppsFilled } from "react-icons/tb";
 
 import { useEffect, useState } from "react";
-import { ServerStatus } from "./Server.jsx";
+import { ServerStatus, ServerStatusSkeleton } from "./Server.jsx";
 
 const getServerStatuses = (pre, success, failure) => {
   pre();
@@ -69,9 +67,7 @@ export const HomePage = () => {
       </HStack>
       <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} spacing={8}>
         {serverStatusLoading ? (
-          <Center axis="both">
-            <CircularProgress isIndeterminate />
-          </Center>
+          <ServerStatusSkeleton />
         ) : (
           serverStatuses.map((serverState) => (
             <ServerStatus
