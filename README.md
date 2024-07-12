@@ -21,7 +21,11 @@ FrontPorch is a configurable dashboard designed for homelabs. It provides a comp
 
 ## Installation
 
+> [!NOTE]
+> Ready to install standalone binaries will soon be launched once I figure out the build automation flow and a place to upload the assets. Till then, you will have to build from source to be able to run this project.
+
 ### Prerequisites
+
 Go (latest version)
 Node.js (latest version)
 Docker (optional, for Docker-related features)
@@ -83,19 +87,16 @@ servers:
 
 ## Daemon Component
 
-To run the backend as a daemon on other servers, adjust the configuration file and start the backend service. Example config for daemon mode is available in the repo as [sample-config.daemon.yaml](sample-config.daemon.yaml)
+To run the backend as a daemon on other servers, adjust the configuration file and start the backend service. Example config for daemon mode is available in the repo as [backend/sample-config.daemon.yaml](backend/sample-config.daemon.yaml)
 
+## Contributing
 
-Run the daemon on each server:
-
-bash
-Copy code
-./daemon/daemon
-Contributing
 Contributions are welcome! Please fork the repository and create a pull request.
 
-License
+## License
+
 This project is licensed under the MIT License. See the [LICENSE](License) file for details.
 
-Contact
+## Contact
+
 For any questions or suggestions, feel free to open an issue!
