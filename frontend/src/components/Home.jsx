@@ -67,7 +67,10 @@ export const HomePage = () => {
       </HStack>
       <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} spacing={8}>
         {serverStatusLoading ? (
-          <ServerStatusSkeleton />
+          // add 4 skeleton loaders using a for loop
+          Array.from({ length: 4 }, (_, i) => (
+            <ServerStatusSkeleton key={i} />
+          ))
         ) : (
           serverStatuses.map((serverState) => (
             <ServerStatus

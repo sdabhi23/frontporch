@@ -16,6 +16,7 @@ import {
   SiApple,
   SiLinux,
   SiMacos,
+  SiOracle,
   SiRaspberrypi,
   SiUbuntu,
 } from "react-icons/si";
@@ -25,15 +26,19 @@ export const ServerStatus = ({ serverState }) => {
 
   if (serverState.host.platform === "darwin") {
     frontendState.sysIcon = SiApple;
-    frontendState.osIcon = SiMacos;
-  } else if (
-    serverState.host.platform === "ubuntu" &&
-    serverState.host.kernel_version.includes("raspi")
-  ) {
+  } else if (serverState.host.kernel_version.includes("raspi")) {
     frontendState.sysIcon = SiRaspberrypi;
-    frontendState.osIcon = SiUbuntu;
+  } else if (serverState.host.kernel_version.includes("oracle")) {
+    frontendState.sysIcon = SiOracle;
   } else {
     frontendState.sysIcon = FaServer;
+  }
+
+  if (serverState.host.platform === "darwin") {
+    frontendState.osIcon = SiMacos;
+  } else if (serverState.host.platform === "ubuntu") {
+    frontendState.osIcon = SiUbuntu;
+  } else {
     frontendState.osIcon = SiLinux;
   }
 
