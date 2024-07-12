@@ -6,10 +6,22 @@ import { ThemeSwitcher } from "./ThemeSwitcher";
 
 export const AppBar = (props) => {
   return (
-    <Box bg={props.bgColor} w="100%" p={8} color="white" boxShadow="base">
+    <Box
+      css={{
+        position: "-webkit-sticky",
+      }}
+      position="sticky"
+      top="0"
+      zIndex="1"
+      bg={props.bgColor}
+      w="100%"
+      p={6}
+      color="white"
+      boxShadow="base"
+    >
       <HStack>
-        <Icon as={TbCloudNetwork} w={8} h={8} marginRight={3} />
-        <Heading as={"h1"} size={"lg"} flex={1}>
+        <Icon as={TbCloudNetwork} w={6} h={6} marginRight={3} />
+        <Heading as={"h1"} size={"md"} flex={1}>
           FrontPorch
         </Heading>
         <ThemeSwitcher />

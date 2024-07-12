@@ -23,7 +23,7 @@ export const App = (props) => {
         <meta name="theme-color" content={bgToken} data-rh="true" />
       </Helmet>
       <AppBar bgColor={props.bgColor} />
-      <Box p={8}>
+      <Box p={8} >
         <RouterProvider router={router} />
       </Box>
     </>
