@@ -13,17 +13,7 @@ import { TbAppsFilled } from "react-icons/tb";
 import { useEffect, useState } from "react";
 import { ServerStatus, ServerStatusSkeleton } from "./Server.jsx";
 
-const getServerStatuses = (pre, success, failure) => {
-  pre();
-  const hostname = window.location.host;
-  fetch(`http://${hostname}/api/sysinfo`, {
-    method: "GET",
-    redirect: "follow",
-  })
-    .then((response) => response.json())
-    .then((result) => success(result))
-    .catch((error) => failure(error));
-};
+import { getServerStatuses } from "../utils/apis.js";
 
 export const HomePage = () => {
   const [serverStatuses, setServerStatuses] = useState({});

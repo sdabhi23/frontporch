@@ -61,7 +61,7 @@ export const ServerStatus = ({ serverState }) => {
   frontendState.disk.used_percent = serverState.disk.used_percent.toFixed(2);
 
   return (
-    <Card variant="elevated">
+    <Card variant="elevated" h={150}>
       <CardBody>
         <HStack mb={4}>
           <Icon as={FaCircle} color={frontendState.status_color} />{" "}
@@ -121,7 +121,7 @@ ServerStatus.propTypes = {
 
 export const ServerStatusSkeleton = () => {
   return (
-    <Card variant="elevated">
+    <Card variant="elevated" h={150}>
       <CardBody>
         <HStack mb={6}>
           <SkeletonCircle h={5} w={5} />{" "}
