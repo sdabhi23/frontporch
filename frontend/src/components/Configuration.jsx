@@ -17,11 +17,9 @@ export const Configuration = () => {
     );
   }, []);
 
-  console.log(config);
-
   return (
     <Card variant="elevated" whiteSpace="pre" w="100%" p={8}>
-      <Code bg="transparent">
+      <Code bg="transparent" overflowX="scroll">
         {config}
       </Code>
     </Card>
