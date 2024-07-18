@@ -21,15 +21,14 @@ type HttpConfig struct {
 type WidgetType string
 
 const (
-	OpenWeatherMap WidgetType = "OPEN_WEATHER_MAP"
-	LinkChecker    WidgetType = "LINK_CHECKER"
-	Link           WidgetType = "LINK"
+	OpenWeatherMap WidgetType = "open_weather_map"
+	LinkChecker    WidgetType = "link_checker"
+	Link           WidgetType = "link"
 )
 
 type WidgetConfig struct {
 	Name       string            `yaml:"name" json:"name"`
 	Type       WidgetType        `yaml:"type" json:"type"`
-	URL        string            `yaml:"url" json:"url"`
 	Properties map[string]string `yaml:"properties" json:"properties"`
 }
 

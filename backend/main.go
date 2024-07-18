@@ -12,6 +12,7 @@ import (
 
 	"frontporch/config"
 	"frontporch/sysinfo"
+	"frontporch/weather"
 )
 
 func main() {
@@ -57,6 +58,21 @@ func main() {
 
 		w.Header().Set("Content-Type", "application/json")
 		json.NewEncoder(w).Encode(*appConfig)
+	})
+
+	http.HandleFunc("/api/widgets", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+
+		w.Header().Set("Content-Type", "application/json")
+		var response []map[string]string
+		weather, err := weather.GetWeatherInfo(&appConfig.Widgets)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		response = append(response, *weather...)
+		json.NewEncoder(w).Encode(response)
 	})
 
 	serverAddress := fmt.Sprintf("%s:%d", appConfig.HTTP.Host, appConfig.HTTP.Port)

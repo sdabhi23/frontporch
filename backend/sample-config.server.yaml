@@ -10,3 +10,11 @@ servers:
     port: 8080
   - host: thor
     port: 8080
+widgets:
+  - name: Bangalore
+    type: open_weather_map
+    properties:
+      apikey: <---insert-api-key-here---->
+      units: metric
+      lat: 12.9116
+      lon: 77.6839
