@@ -2,15 +2,20 @@ import PropTypes from "prop-types";
 
 import { Box, useToken } from "@chakra-ui/react";
 import { Helmet } from "react-helmet-async";
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { Outlet, RouterProvider, createBrowserRouter } from "react-router-dom";
 
 import { AppBar } from "./components/AppBar";
+import { Configuration } from "./components/Configuration";
 import { HomePage } from "./components/Home";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <HomePage />,
+  },
+  {
+    path: "/config",
+    element: <Configuration />,
   },
 ]);
 

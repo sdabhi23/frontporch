@@ -1,6 +1,14 @@
 import PropTypes from "prop-types";
 
-import { Box, Heading, HStack, Icon } from "@chakra-ui/react";
+import {
+  Box,
+  DarkMode,
+  Heading,
+  HStack,
+  Icon,
+  IconButton,
+} from "@chakra-ui/react";
+import { FaGear } from "react-icons/fa6";
 import { TbCloudNetwork } from "react-icons/tb";
 import { ThemeSwitcher } from "./ThemeSwitcher";
 
@@ -24,6 +32,9 @@ export const AppBar = (props) => {
         <Heading as={"h1"} size={"md"} flex={1}>
           FrontPorch
         </Heading>
+        <DarkMode>
+          <IconButton icon={<FaGear />} bg="transparent" fontSize="20px" />
+        </DarkMode>
         <ThemeSwitcher />
       </HStack>
     </Box>
