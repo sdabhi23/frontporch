@@ -1,26 +1,26 @@
+import { useEffect, useState } from "react";
+import {
+  Box,
+  useToken,
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  Icon,
+} from "@chakra-ui/react";
+import { FaHouse } from "react-icons/fa6";
 import PropTypes from "prop-types";
-
-import { Box, useToken } from "@chakra-ui/react";
 import { Helmet } from "react-helmet-async";
-import { Outlet, RouterProvider, createBrowserRouter } from "react-router-dom";
-
+import { Outlet, Link, useLocation } from "react-router-dom";
 import { AppBar } from "./components/AppBar";
-import { Configuration } from "./components/Configuration";
-import { HomePage } from "./components/Home";
-
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <HomePage />,
-  },
-  {
-    path: "/config",
-    element: <Configuration />,
-  },
-]);
 
 export const App = (props) => {
   const [bgToken] = useToken("colors", [props.bgColor]);
+  let location = useLocation();
+  const [page, setPage] = useState("");
+
+  useEffect(() => {
+    setPage(location.pathname);
+  }, [location]);
 
   return (
     <>
@@ -28,8 +28,20 @@ export const App = (props) => {
         <meta name="theme-color" content={bgToken} data-rh="true" />
       </Helmet>
       <AppBar bgColor={props.bgColor} />
-      <Box p={8} >
-        <RouterProvider router={router} />
+      <Box p={8}>
+        {page != "/" && (
+          <Breadcrumb marginBottom={8}>
+            <BreadcrumbItem>
+              <BreadcrumbLink as={Link} to="/" lineHeight={0.75} marginRight={0.5}>
+                <Icon as={FaHouse} w={4} h={4}/>
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbItem isCurrentPage>
+              <BreadcrumbLink>Contact</BreadcrumbLink>
+            </BreadcrumbItem>
+          </Breadcrumb>
+        )}
+        <Outlet />
       </Box>
     </>
   );

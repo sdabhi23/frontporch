@@ -7,12 +7,16 @@ import {
   HStack,
   Icon,
   IconButton,
+  Spacer,
 } from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
 import { FaGear } from "react-icons/fa6";
 import { TbCloudNetwork } from "react-icons/tb";
 import { ThemeSwitcher } from "./ThemeSwitcher";
 
 export const AppBar = (props) => {
+  const navigate = useNavigate();
+
   return (
     <Box
       css={{
@@ -29,11 +33,17 @@ export const AppBar = (props) => {
     >
       <HStack>
         <Icon as={TbCloudNetwork} w={6} h={6} marginRight={3} />
-        <Heading as={"h1"} size={"md"} flex={1}>
+        <Heading as={"h1"} size={"md"}>
           FrontPorch
         </Heading>
+        <Spacer />
         <DarkMode>
-          <IconButton icon={<FaGear />} bg="transparent" fontSize="20px" />
+          <IconButton
+            icon={<FaGear />}
+            bg="transparent"
+            fontSize="20px"
+            onClick={() => navigate("/config")}
+          />
         </DarkMode>
         <ThemeSwitcher />
       </HStack>
