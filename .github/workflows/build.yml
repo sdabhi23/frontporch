@@ -1,23 +1,20 @@
 # This workflow will build a golang project
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-go
 
-name: Main build
+name: Release
+
+permissions:
+  contents: write
+  id-token: write
 
 on:
+  workflow_dispatch:
+  pull_request:
   push:
-    branches: ["master"]
+    tags: ['v*']
 
 jobs:
   backend:
-    defaults:
-      run:
-        working-directory: backend
-
-    # strategy:
-    #   matrix:
-    #     os: ["linux", "darwin", "freebsd"]
-    #     arch: ["amd64", "arm64"]
-
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -44,9 +41,3 @@ jobs:
       #   with:
       #     name: myapp
       #     path: myfolder/dist/*
-
-      # - name: Download dependencies
-      #   run: go mod download
-
-      # - name: Build
-      #   run: GOOS=${{ matrix.os }} GOARCH=${{ matrix.arch }} go build -v -o frontporch_${{ matrix.os }}_${{ matrix.arch }} .
