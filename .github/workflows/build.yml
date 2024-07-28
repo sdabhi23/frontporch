@@ -32,17 +32,18 @@ jobs:
       - name: Run GoReleaser
         uses: goreleaser/goreleaser-action@v6
         with:
+          workdir: backend
           distribution: goreleaser
           version: "~> v2"
           args: release --snapshot --clean
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Upload assets
-        uses: actions/upload-artifact@v3
-        with:
-          name: myapp
-          path: myfolder/dist/*
+      # - name: Upload assets
+      #   uses: actions/upload-artifact@v3
+      #   with:
+      #     name: myapp
+      #     path: myfolder/dist/*
 
       # - name: Download dependencies
       #   run: go mod download
