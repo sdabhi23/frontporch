@@ -2,6 +2,7 @@ package weather
 
 import (
 	"fmt"
+	"frontporch/config"
 	"strconv"
 )
 
@@ -28,6 +29,8 @@ type WeatherInfoRequest struct {
 
 func (w *WeatherInfoRequest) ToMap() map[string]string {
 	result := make(map[string]string)
+
+	result["type"] = string(config.OpenWeatherMap)
 
 	result["city_name"] = w.CityName
 	result["temp_actual"] = strconv.FormatFloat(w.Temp.Actual, 'f', 2, 64)
