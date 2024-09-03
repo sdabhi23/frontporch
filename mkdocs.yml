@@ -1,0 +1,30 @@
+# yaml-language-server: $schema=https://squidfunk.github.io/mkdocs-material/schema.json
+
+site_name: frontporch
+repo_name: sdabhi23/frontporch
+repo_url: https://github.com/sdabhi23/frontporch
+edit_uri: tree/master/docs/
+dev_addr: 0.0.0.0:8000
+plugins:
+  - search
+  - social
+theme:
+  name: material
+  features:
+    - navigation.path
+    - toc.integrate
+    - navigation.top
+    - navigation.indexes
+    - search.highlight
+    - search.share
+    - content.action.edit
+    - content.code.copy
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+
