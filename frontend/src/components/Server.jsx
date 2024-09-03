@@ -4,14 +4,12 @@ import {
   HStack,
   Heading,
   Icon,
-  SkeletonCircle,
-  SkeletonText,
   Spacer,
   Text,
 } from "@chakra-ui/react";
 import PropTypes from "prop-types";
 
-import { FaCircle, FaServer } from "react-icons/fa6";
+import { FaCircle, FaMicrosoft, FaServer } from "react-icons/fa6";
 import {
   SiApple,
   SiLinux,
@@ -21,23 +19,33 @@ import {
   SiUbuntu,
 } from "react-icons/si";
 
+import { FaWindows } from "react-icons/fa6";
+
 export const ServerStatus = ({ serverState }) => {
   const frontendState = {};
 
-  if (serverState.host.platform === "darwin") {
+  var platform = serverState.host.platform.toLowerCase();
+  var os = serverState.host.os.toLowerCase();
+  var kernel_version = serverState.host.kernel_version.toLowerCase()
+
+  if (platform === "darwin") {
     frontendState.sysIcon = SiApple;
-  } else if (serverState.host.kernel_version.includes("raspi")) {
+  } else if (kernel_version.includes("raspi")) {
     frontendState.sysIcon = SiRaspberrypi;
-  } else if (serverState.host.kernel_version.includes("oracle")) {
+  } else if (kernel_version.includes("oracle")) {
     frontendState.sysIcon = SiOracle;
+  } else if (kernel_version.includes("microsoft") || platform.includes("microsoft")) {
+    frontendState.sysIcon = FaMicrosoft;
   } else {
     frontendState.sysIcon = FaServer;
   }
 
-  if (serverState.host.platform === "darwin") {
+  if (os === "darwin") {
     frontendState.osIcon = SiMacos;
-  } else if (serverState.host.platform === "ubuntu") {
+  } else if (platform === "ubuntu") {
     frontendState.osIcon = SiUbuntu;
+  } else if (os === "windows") {
+    frontendState.osIcon = FaWindows;
   } else {
     frontendState.osIcon = SiLinux;
   }
@@ -117,21 +125,4 @@ ServerStatus.propTypes = {
     }),
     ip_addresses: PropTypes.arrayOf(PropTypes.string),
   }).isRequired,
-};
-
-export const ServerStatusSkeleton = () => {
-  return (
-    <Card variant="elevated" h={150}>
-      <CardBody>
-        <HStack mb={6}>
-          <SkeletonCircle h={5} w={5} />{" "}
-          <SkeletonText noOfLines={1} w="100px" />
-          <Spacer />
-          <SkeletonCircle h={5} w={5} />
-          <SkeletonCircle h={5} w={5} />
-        </HStack>
-        <SkeletonText noOfLines={4} />
-      </CardBody>
-    </Card>
-  );
 };

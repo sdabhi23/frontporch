@@ -1,5 +1,5 @@
-// const hostname = window.location.host;
-const BASE_URL = "http://localhost:8080";
+const hostname = window.location.host;
+const BASE_URL = `http://${hostname}`;
 
 export const getServerStatuses = (pre, success, failure) => {
   pre();
