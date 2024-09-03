@@ -1,29 +1,35 @@
 import {
   Card,
-  Text,
   CardBody,
-  Heading,
   CardHeader,
+  Heading,
   HStack,
-  Spacer,
   Icon,
+  Spacer,
+  StackDivider,
+  Text,
+  VStack,
 } from "@chakra-ui/react";
+import PropTypes from "prop-types";
 import {
-  WiDaySunny,
-  WiNightClear,
-  WiDayCloudy,
-  WiNightAltCloudy,
+  WiBarometer,
   WiCloud,
   WiCloudy,
-  WiShowers,
+  WiDayCloudy,
   WiDayRain,
-  WiNightAltRain,
+  WiDaySunny,
   WiDayThunderstorm,
-  WiNightAltThunderstorm,
-  WiSnowflakeCold,
   WiFog,
+  WiHumidity,
+  WiNightAltCloudy,
+  WiNightAltRain,
+  WiNightAltThunderstorm,
+  WiNightClear,
+  WiShowers,
+  WiSnowflakeCold,
 } from "react-icons/wi";
-import PropTypes from "prop-types";
+
+import { toTitleCase } from "../utils/strings";
 
 const iconMap = {
   "01d": WiDaySunny,
@@ -46,42 +52,69 @@ const iconMap = {
   "50n": WiFog,
 };
 
+const unitsMap = {
+  metric: "°C",
+  standard: "K",
+  imperial: "°F",
+};
+
 export const OpenWeatherMap = ({ data }) => {
   console.log(data);
   console.log(data.city_name);
   return (
-    <Card variant="elevated" h={150}>
-      <CardHeader>
+    <Card variant="elevated">
+      <CardBody>
         <HStack>
-          <Icon as={iconMap[data.weather_0_icon]} h={10} w={10} />
+          <Icon as={iconMap[data.weather_icon]} h={8} w={8} />
+          <Text>{toTitleCase(data.weather_description)}</Text>
           <Spacer />
-          <Heading fontSize="lg">
+          <Heading fontSize="s">
             {data.city_name}, {data.country}
           </Heading>
         </HStack>
-        <HStack>
-          <Spacer/>
-          <Text fontSize="m">{data.temp_actual}</Text>
-          <Text fontSize="xs">Feels like {data.temp_feels_like}</Text>
+        <HStack
+          gap="2"
+          justifyContent="center"
+          marginTop="3"
+          divider={<StackDivider borderColor="gray.200" />}
+        >
+          <VStack gap="0" alignItems="baseline">
+            <Text fontSize="m">
+              {Math.floor(data.temp_actual)} {unitsMap[data.units]}
+            </Text>
+            <Text fontSize="xs">
+              Feels like {Math.floor(data.temp_feels_like)}{" "}
+              {unitsMap[data.units]}
+            </Text>
+          </VStack>
+            <HStack>
+              <Icon as={WiHumidity} h={8} w={8} />
+              <Text fontSize="m">{data.humidity}</Text>
+            </HStack>
+            <HStack>
+              <Icon as={WiBarometer} h={8} w={8} />
+              <Text fontSize="m">{data.pressure}</Text>
+            </HStack>
         </HStack>
-      </CardHeader>
-      <CardBody></CardBody>
+      </CardBody>
     </Card>
   );
 };
 
 OpenWeatherMap.PropTypes = {
-  city_name: PropTypes.string.isRequired,
-  country: PropTypes.string.isRequired,
-  humidity: PropTypes.string.isRequired,
-  pressure: PropTypes.string.isRequired,
-  sunrise: PropTypes.string.isRequired,
-  sunset: PropTypes.string.isRequired,
-  temp_actual: PropTypes.string.isRequired,
-  temp_feels_like: PropTypes.string.isRequired,
-  type: PropTypes.string.isRequired,
-  weather_0_description: PropTypes.string.isRequired,
-  weather_0_icon: PropTypes.string.isRequired,
-  weather_0_id: PropTypes.string.isRequired,
-  weather_0_main: PropTypes.string.isRequired,
+  data: PropTypes.shape({
+    city_name: PropTypes.string.isRequired,
+    country: PropTypes.string.isRequired,
+    humidity: PropTypes.number.isRequired,
+    pressure: PropTypes.number.isRequired,
+    sunrise: PropTypes.number.isRequired, // Unix timestamp
+    sunset: PropTypes.number.isRequired, // Unix timestamp
+    temp_actual: PropTypes.number.isRequired,
+    temp_feels_like: PropTypes.number.isRequired,
+    type: PropTypes.string.isRequired,
+    weather_description: PropTypes.string.isRequired,
+    weather_icon: PropTypes.string.isRequired,
+    weather_id: PropTypes.string.isRequired,
+    weather_main: PropTypes.string.isRequired,
+  }),
 };
