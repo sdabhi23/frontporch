@@ -1,7 +1,6 @@
 package weather
 
 import (
-	"fmt"
 	"frontporch/config"
 	"strconv"
 )
@@ -27,7 +26,7 @@ type WeatherInfoRequest struct {
 	} `json:"sys"`
 }
 
-func (w *WeatherInfoRequest) ToMap() map[string]string {
+func (w *WeatherInfoRequest) ToMap(c *config.WidgetConfig) map[string]string {
 	result := make(map[string]string)
 
 	result["type"] = string(config.OpenWeatherMap)
@@ -38,16 +37,17 @@ func (w *WeatherInfoRequest) ToMap() map[string]string {
 	result["pressure"] = strconv.Itoa(w.Temp.Pressure)
 	result["humidity"] = strconv.Itoa(w.Temp.Humidity)
 
-	for i, weather := range w.Weather {
-		result[fmt.Sprintf("weather_%d_id", i)] = strconv.Itoa(weather.Id)
-		result[fmt.Sprintf("weather_%d_main", i)] = weather.Main
-		result[fmt.Sprintf("weather_%d_description", i)] = weather.Description
-		result[fmt.Sprintf("weather_%d_icon", i)] = weather.Icon
-	}
+	weather := w.Weather[0]
+	result["weather_id"] = strconv.Itoa(weather.Id)
+	result["weather_main"] = weather.Main
+	result["weather_description"] = weather.Description
+	result["weather_icon"] = weather.Icon
 
 	result["country"] = w.Sys.Country
 	result["sunrise"] = strconv.Itoa(w.Sys.Sunrise)
 	result["sunset"] = strconv.Itoa(w.Sys.Sunset)
+
+	result["units"] = c.Properties["units"]
 
 	return result
 }

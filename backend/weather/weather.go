@@ -45,11 +45,9 @@ func GetWeatherInfo(widgets *[]config.WidgetConfig) (*[]map[string]string, error
 				return nil, err
 			}
 
-			weather := weatherInfoRequest.ToMap()
+			weather := weatherInfoRequest.ToMap(&widget)
 
 			weatherInfoList = append(weatherInfoList, weather)
-			fmt.Println(weatherInfoRequest)
-			fmt.Println(weather)
 		}
 	}
 
