@@ -13,9 +13,8 @@ type ServerConfig struct {
 }
 
 type HttpConfig struct {
-	Host          string `yaml:"host" json:"host"`
-	Port          int    `yaml:"port" json:"port"`
-	StaticFileDir string `yaml:"static_file_dir" json:"static_file_dir"`
+	Host string `yaml:"host" json:"host"`
+	Port int    `yaml:"port" json:"port"`
 }
 
 type WidgetType string

@@ -45,11 +45,7 @@ func main() {
 			response = []sysinfo.SysInfo{}
 		}
 
-		w.Header().Set("Access-Control-Allow-Origin", "*")
-		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
-
-		w.Header().Set("Content-Type", "application/json")
-		json.NewEncoder(w).Encode(response)
+		utils.JSONResponse(w, response)
 	})
 
 	http.HandleFunc("/api/config", func(w http.ResponseWriter, r *http.Request) {
@@ -58,21 +54,34 @@ func main() {
 
 		w.Header().Set("Content-Type", "application/json")
 		json.NewEncoder(w).Encode(*appConfig)
+
+		utils.JSONResponse(w, *appConfig)
 	})
 
 	http.HandleFunc("/api/widgets", func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Access-Control-Allow-Origin", "*")
-		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
-
-		w.Header().Set("Content-Type", "application/json")
 		var response []map[string]string
-		weather, err := weather.GetWeatherInfo(&appConfig.Widgets)
+
+		// loop over widget configs
+		for _, widget := range appConfig.Widgets {
+			switch widget.Type {
+			case config.OpenWeatherMap:
+				weather, err := weather.GetWeatherInfo(&widget)
 		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
+					errMap := map[string]string{
+						"message": err.Error(),
+					}
+					utils.JSONError(w, errMap, http.StatusInternalServerError)
 			return
 		}
-		response = append(response, *weather...)
-		json.NewEncoder(w).Encode(response)
+				response = append(response, *weather)
+			default:
+				errMap := map[string]string{
+					"message": fmt.Sprintf("widget type handling not implemented: %v", widget.Type),
+				}
+				utils.JSONError(w, errMap, http.StatusInternalServerError)
+			}
+		}
+		utils.JSONResponse(w, response)
 	})
 
 	serverAddress := fmt.Sprintf("%s:%d", appConfig.HTTP.Host, appConfig.HTTP.Port)
