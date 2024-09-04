@@ -18,7 +18,12 @@ export const getWidgets = (pre, success, failure) => {
     method: "GET",
     redirect: "follow",
   })
-    .then((response) => response.json())
+    .then((response) => {
+      if (response.ok) {
+        return response.json();
+      }
+      throw new Error("Something went wrong");
+    })
     .then((result) => success(result))
     .catch((error) => failure(error));
 };
@@ -29,7 +34,12 @@ export const getConfig = (pre, success, failure) => {
     method: "GET",
     redirect: "follow",
   })
-    .then((response) => response.json())
+    .then((response) => {
+      if (response.ok) {
+        return response.json();
+      }
+      throw new Error("Something went wrong");
+    })
     .then((result) => success(result))
     .catch((error) => failure(error));
 };
