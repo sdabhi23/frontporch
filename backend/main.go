@@ -1,9 +1,11 @@
 package main
 
 import (
+	"embed"
 	"encoding/json"
 	"flag"
 	"fmt"
+	"io/fs"
 	"log"
 	"net/http"
 	"os"
@@ -12,11 +14,23 @@ import (
 
 	"frontporch/config"
 	"frontporch/sysinfo"
+	"frontporch/utils"
 	"frontporch/weather"
 )
 
-func main() {
+// subFS is a helper function to serve files from a subdirectory of an embed.FS
+func subFS(fsys embed.FS, dir string) http.FileSystem {
+	sub, err := fs.Sub(fsys, dir)
+	if err != nil {
+		log.Fatal(err)
+	}
+	return http.FS(sub)
+}
 
+//go:embed static/*
+var staticFiles embed.FS
+
+func main() {
 	var configPath string
 	flag.StringVar(&configPath, "config-file", "", "YAML file for config management")
 	flag.Parse()
@@ -29,7 +43,7 @@ func main() {
 	}
 
 	if appConfig.Task == config.ServerTask {
-		fs := http.FileServer(http.Dir(appConfig.HTTP.StaticFileDir))
+		fs := http.FileServer(subFS(staticFiles, "static"))
 		http.Handle("/", fs)
 	}
 
@@ -66,13 +80,13 @@ func main() {
 			switch widget.Type {
 			case config.OpenWeatherMap:
 				weather, err := weather.GetWeatherInfo(&widget)
-		if err != nil {
+				if err != nil {
 					errMap := map[string]string{
 						"message": err.Error(),
 					}
 					utils.JSONError(w, errMap, http.StatusInternalServerError)
-			return
-		}
+					return
+				}
 				response = append(response, *weather)
 			default:
 				errMap := map[string]string{
