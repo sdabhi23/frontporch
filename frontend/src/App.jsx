@@ -37,7 +37,7 @@ export const App = (props) => {
               </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbItem isCurrentPage>
-              <BreadcrumbLink>Contact</BreadcrumbLink>
+              <BreadcrumbLink>Configuration</BreadcrumbLink>
             </BreadcrumbItem>
           </Breadcrumb>
         )}
